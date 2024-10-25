@@ -5,7 +5,7 @@ import { useLoaderData } from "react-router-dom";
 const Update = () => {
 
     const loadedUsers = useLoaderData();
-    console.log(loadedUsers.name);
+    // console.log(loadedUsers.name);
 
     const nameRef = useRef();
     const emailRef = useRef();
@@ -21,8 +21,23 @@ const Update = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        const user = { name, email, password };
-        console.log(user);
+        const updatedUser = { name, email, password };
+        console.log(updatedUser);
+
+        fetch(`http://localhost:5000/users/${loadedUsers._id}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(updatedUser)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.modifiedCount > 0) {
+                    alert('User updated Successfully');
+                }
+            })
     }
 
     return (
